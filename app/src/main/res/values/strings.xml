@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Club Marvel</string>
+
+    <!--Splash screen-->
+    <string name="splash_powered_by">Powered by</string>
+    <string name="splash_marvel_api">MARVEL API</string>
+
 </resources>
