@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "name": "COMICS",
+    "imageUrl": "https://wallpapercave.com/wp/wp2903360.jpg"
+  },
+  {
+    "id": 2,
+    "name": "SERIES",
+    "imageUrl": "https://pmcdeadline2.files.wordpress.com/2015/10/damage-control-marvel-comics.jpg?w=620"
+  },
+  {
+    "id": 3,
+    "name": "CHARACTERS",
+    "imageUrl": "https://www.syfy.com/sites/syfy/files/styles/1200x680/public/wire/legacy/DeadPoolWeddingCover.jpg"
+  },
+  {
+    "id": 4,
+    "name": "CREATORS",
+    "imageUrl": "https://images.newrepublic.com/ba645476820609fec83ad47e61858892aef0fbce.jpeg?w=1200&q=65&dpi=2.625&fm=pjpg&h=497"
+  }
+]
