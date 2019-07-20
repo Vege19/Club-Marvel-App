@@ -1,9 +1,13 @@
 package github.vege19.clubmarvel.utils
 
+import android.content.Context
 import android.content.Intent
+import android.widget.ImageView
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bumptech.glide.Glide
+import github.vege19.clubmarvel.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -28,4 +32,14 @@ fun ViewModel.makeRetrofitCallback(action: suspend () -> Unit) {
             action.invoke()
         }
     }
+}
+
+//Set image with glide
+fun ImageView.setGlideImage(url: String, context: Context) {
+    Glide.with(context)
+            .load(url)
+            .centerCrop()
+            .override(784, 336)
+            .placeholder(R.drawable.ic_broken_image_24dp)
+            .into(this)
 }

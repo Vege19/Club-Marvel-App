@@ -2,21 +2,27 @@ package github.vege19.clubmarvel.controllers
 
 
 import android.os.Bundle
+import android.text.Layout
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
 import github.vege19.clubmarvel.App
 
 import github.vege19.clubmarvel.R
+import github.vege19.clubmarvel.utils.GenericAdapter
+import github.vege19.clubmarvel.utils.setGlideImage
 import github.vege19.clubmarvel.viewmodels.DashboardFragmentViewModel
 import github.vege19.clubmarvel.viewmodels.MainActivityViewModel
 import kotlinx.android.synthetic.main.fragment_actionbar.view.*
 import kotlinx.android.synthetic.main.fragment_dashboard.*
+import kotlinx.android.synthetic.main.item_menu_option.view.*
 import javax.inject.Inject
 
 class DashboardFragment : Fragment() {
@@ -28,8 +34,10 @@ class DashboardFragment : Fragment() {
         ViewModelProviders.of(this, viewModelFactory)[DashboardFragmentViewModel::class.java]
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_dashboard, container, false)
     }
@@ -49,9 +57,19 @@ class DashboardFragment : Fragment() {
     private fun loadDashboardOptions() {
         viewModel.getMenuOptions().observe(this, Observer {
             if (it.isNotEmpty()) {
-                for (i in it)
-                    Log.d("TAG", "name: ${i.name}")
+                _menu_dashboard_rv.layoutManager = GridLayoutManager(activity, 1)
+                _menu_dashboard_rv.adapter = GenericAdapter(R.layout.item_menu_option, it,
+                    fun(viewHolder, view, option, _) {
+                        if (option.id % 2 == 0) {
+                            view._name_dashboard_txt.textAlignment = TextView.TEXT_ALIGNMENT_TEXT_END
+                        }
+                        view._name_dashboard_txt.text = option.name
+                        view._image_dashboard_iv.setGlideImage(option.imageUrl, requireContext())
+                        viewHolder.itemView.setOnClickListener { Log.d("TAG", "Clicked!") }
+                    })
+
             } else {
+                Log.d("TAG", "Empty list.")
 
             }
         })
@@ -61,8 +79,10 @@ class DashboardFragment : Fragment() {
 
     private fun configureActionbar() {
         _actionbar_dashboard._fragment_tb.title = getString(R.string.dash_title_actionbar)
-        _actionbar_dashboard._fragment_tb.setTitleTextAppearance(requireContext(),
-                R.style.ActionBarTitleAppearance)
+        _actionbar_dashboard._fragment_tb.setTitleTextAppearance(
+            requireContext(),
+            R.style.ActionBarTitleAppearance
+        )
     }
 
 }
