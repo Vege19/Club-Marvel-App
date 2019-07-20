@@ -7,5 +7,4 @@ class AppModule {
 
     //: Declare providers ://
 
-
 }
