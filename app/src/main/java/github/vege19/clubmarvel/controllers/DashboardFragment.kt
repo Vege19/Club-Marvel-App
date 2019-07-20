@@ -43,7 +43,7 @@ class DashboardFragment : Fragment() {
     }
 
     private fun startFlow() {
-        (activity as App).getComponent().inject(this)
+        (context?.applicationContext as App).getComponent().inject(this)
     }
 
     private fun loadDashboardOptions() {
