@@ -2,10 +2,12 @@ package github.vege19.clubmarvel.utils
 
 import android.content.Context
 import android.content.Intent
+import android.view.animation.Animation
 import android.widget.ImageView
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bumptech.glide.GenericTransitionOptions
 import com.bumptech.glide.Glide
 import github.vege19.clubmarvel.R
 import kotlinx.coroutines.Dispatchers
@@ -35,11 +37,19 @@ fun ViewModel.makeRetrofitCallback(action: suspend () -> Unit) {
 }
 
 //Set image with glide
-fun ImageView.setGlideImage(url: String, context: Context) {
-    Glide.with(context)
-            .load(url)
-            .centerCrop()
-            .override(784, 336)
-            .placeholder(R.drawable.ic_broken_image_24dp)
-            .into(this)
+fun ImageView.setGlideImage(url: String, context: Context, hasZoomAnimation: Boolean, width: Int?, height: Int?) {
+    if (hasZoomAnimation) {
+        Glide.with(context)
+                .load(url)
+                .transition(GenericTransitionOptions.with(R.anim.anim_zoom_out))
+                .centerCrop()
+                .override(width?:0, height?:0)
+                .into(this)
+    } else {
+        Glide.with(context)
+                .load(url)
+                .centerCrop()
+                .override(width!!, height!!)
+                .into(this)
+    }
 }

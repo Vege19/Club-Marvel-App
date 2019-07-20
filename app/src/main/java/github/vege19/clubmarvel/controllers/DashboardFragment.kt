@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -64,7 +65,7 @@ class DashboardFragment : Fragment() {
                             view._name_dashboard_txt.textAlignment = TextView.TEXT_ALIGNMENT_TEXT_END
                         }
                         view._name_dashboard_txt.text = option.name
-                        view._image_dashboard_iv.setGlideImage(option.imageUrl, requireContext())
+                        view._image_dashboard_iv.setGlideImage(option.imageUrl, requireContext(), true, null, null)
                         viewHolder.itemView.setOnClickListener { Log.d("TAG", "Clicked!") }
                     })
 
