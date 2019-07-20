@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Club Marvel</string>
+
+    <!--Splash screen-->
+    <string name="splash_powered_by">Powered by</string>
+    <string name="splash_marvel_api">MARVEL API</string>
+
+    <!--Dashboard fragment-->
+    <string name="dash_title_actionbar">CLUB MARVEL</string>
+    <string name="dash_option_comics">COMICS</string>
+    <string name="dash_option_series">SERIES</string>
+    <string name="dash_option_characters">CHARACTERS</string>
+    <string name="dash_option_creators">CREATORS</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
