@@ -3,13 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimary"
+    android:paddingEnd="@dimen/_150sdp">
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/_fragment_tb"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/ic_bg_title_actionbar"
         app:title="@string/app_name"
-        app:titleTextColor="@color/colorPrimaryText"/>
+        app:titleTextColor="@color/colorPrimaryText" />
 
 </com.google.android.material.appbar.AppBarLayout>

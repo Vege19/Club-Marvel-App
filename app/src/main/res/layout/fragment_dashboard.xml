@@ -1,12 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".controllers.DashboardFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".controllers.DashboardFragment"
+    android:background="@color/colorPrimary">
 
-    <include
-        android:id="@+id/_actionbar_dashboard"
-        layout="@layout/fragment_actionbar"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/_actionbar_dashboard"
+            layout="@layout/fragment_actionbar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/_menu_dashboard_rv"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/_actionbar_dashboard"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:listitem="@layout/item_menu_option"
+            tools:itemCount="4"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

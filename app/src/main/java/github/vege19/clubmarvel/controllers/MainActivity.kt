@@ -1,10 +1,10 @@
 package github.vege19.clubmarvel.controllers
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.FragmentActivity
 import github.vege19.clubmarvel.R
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

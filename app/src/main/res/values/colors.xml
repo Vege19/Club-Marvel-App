@@ -6,4 +6,5 @@
     <color name="colorPrimaryText">#FFFFFF</color>
     <color name="colorSecondaryText">#ADADAD</color>
     <color name="colorHint">#464646</color>
+    <color name="colorTransparentBlack">#80000000</color>
 </resources>
