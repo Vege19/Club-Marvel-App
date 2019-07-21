@@ -42,7 +42,7 @@ class DashboardFragment : Fragment() {
         ViewModelProviders.of(this, viewModelFactory)[DashboardFragmentViewModel::class.java]
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,  savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_dashboard, container, false)
     }
@@ -63,7 +63,7 @@ class DashboardFragment : Fragment() {
         activity?.configureActionbar(requireContext(),
                 _actionbar_dashboard,
                 getString(R.string.dash_title_actionbar),
-                false, fun (_) {})
+                false, fun(_) {})
     }
 
     private fun loadDashboardOptions() {
@@ -76,9 +76,17 @@ class DashboardFragment : Fragment() {
                                 view._name_dashboard_txt.textAlignment = TextView.TEXT_ALIGNMENT_TEXT_END
                             }
                             view._name_dashboard_txt.text = option.name
-                            view._image_dashboard_iv.setGlideImage(option.imageUrl, requireContext(), true, null, null)
+                            view._image_dashboard_iv.setGlideImage(option.imageUrl,
+                                    requireContext(),
+                                    true,
+                                    null,
+                                    null)
                             viewHolder.itemView.setOnClickListener {
-                                activity?.navigateTo(requireView(), R.id.action_dashboardFragment_to_comicsFragment, null)
+                                when (option.id) {
+                                    1 -> activity?.navigateTo(requireView(),
+                                            R.id.action_dashboardFragment_to_comicsFragment,
+                                            null)
+                                }
                             }
                         })
 

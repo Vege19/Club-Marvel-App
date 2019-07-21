@@ -13,6 +13,8 @@
         android:layout_height="?actionBarSize"
         android:background="@drawable/ic_bg_title_actionbar"
         app:title="@string/app_name"
-        app:titleTextColor="@color/colorPrimaryText" />
+        app:titleTextColor="@color/colorPrimaryText"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
 </com.google.android.material.appbar.AppBarLayout>
