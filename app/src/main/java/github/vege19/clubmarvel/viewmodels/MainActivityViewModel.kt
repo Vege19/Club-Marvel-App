@@ -6,8 +6,9 @@ import androidx.lifecycle.ViewModel
 import github.vege19.clubmarvel.api.ApiInterface
 import okhttp3.OkHttpClient
 import javax.inject.Inject
+import javax.inject.Named
 
-class MainActivityViewModel @Inject constructor(apiInterface: ApiInterface): ViewModel() {
+class MainActivityViewModel @Inject constructor(): ViewModel() {
 
     private val things = MutableLiveData<List<String>>()
     fun getSomething(): LiveData<List<String>> {
