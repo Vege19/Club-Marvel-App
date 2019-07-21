@@ -1,4 +1,7 @@
 package github.vege19.clubmarvel.models
 
-class StoriesResponseModel {
-}
+import java.io.Serializable
+
+data class StoriesResponseModel(val available: Int = 0,
+                                val collectionUri: String = "",
+                                val items: List<StoryModel> = arrayListOf()): Serializable

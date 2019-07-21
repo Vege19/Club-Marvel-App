@@ -42,10 +42,7 @@ class DashboardFragment : Fragment() {
         ViewModelProviders.of(this, viewModelFactory)[DashboardFragmentViewModel::class.java]
     }
 
-    override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,  savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_dashboard, container, false)
     }
@@ -54,15 +51,19 @@ class DashboardFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         startFlow()
-        activity?.configureActionbar(requireContext(),
-                _actionbar_dashboard,
-                getString(R.string.dash_title_actionbar),
-                false, fun (_) {})
+        configureActionBar()
         loadDashboardOptions()
     }
 
     private fun startFlow() {
-        (context?.applicationContext as App).getComponent().inject(this)
+        App.getComponent().inject(this)
+    }
+
+    private fun configureActionBar() {
+        activity?.configureActionbar(requireContext(),
+                _actionbar_dashboard,
+                getString(R.string.dash_title_actionbar),
+                false, fun (_) {})
     }
 
     private fun loadDashboardOptions() {

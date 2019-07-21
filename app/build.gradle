@@ -18,6 +18,11 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        buildTypes.each {
+            it.buildConfigField 'String', 'MarvelPublicApiKey', MarvelPublicApiKey
+            it.buildConfigField 'String', 'MarvelHash', MarvelHash
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -61,6 +66,7 @@ dependencies {
     //Dagger
     implementation 'com.google.dagger:dagger:2.17'
     kapt 'com.google.dagger:dagger-compiler:2.17'
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
 
     //Intuit sdp
     implementation 'com.intuit.sdp:sdp-android:1.0.6'

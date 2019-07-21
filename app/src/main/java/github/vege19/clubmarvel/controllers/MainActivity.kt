@@ -40,7 +40,7 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun startFlow() {
-        (application as App).getComponent().inject(this)
+        App.getComponent().inject(this)
     }
 
 }
