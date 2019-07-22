@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import github.vege19.clubmarvel.App
 
 import github.vege19.clubmarvel.R
+import github.vege19.clubmarvel.models.DashboardOptionModel
 import github.vege19.clubmarvel.utils.GenericAdapter
 import github.vege19.clubmarvel.utils.configureActionbar
 import github.vege19.clubmarvel.utils.navigateTo
@@ -61,34 +62,16 @@ class DashboardFragment : Fragment() {
 
     private fun configureActionBar() {
         activity?.configureActionbar(requireContext(),
-                _actionbar_dashboard,
-                getString(R.string.dash_title_actionbar),
-                false, fun(_) {})
+            _actionbar_dashboard,
+            getString(R.string.dash_title_actionbar),
+            false, fun(_) {})
     }
 
     private fun loadDashboardOptions() {
         viewModel.getMenuOptions().observe(this, Observer {
             if (it.isNotEmpty()) {
                 _menu_dashboard_rv.layoutManager = GridLayoutManager(activity, 1)
-                _menu_dashboard_rv.adapter = GenericAdapter(R.layout.item_menu_option, it,
-                        fun(viewHolder, view, option, _) {
-                            if (option.id % 2 == 0) {
-                                view._name_dashboard_txt.textAlignment = TextView.TEXT_ALIGNMENT_TEXT_END
-                            }
-                            view._name_dashboard_txt.text = option.name
-                            view._image_dashboard_iv.setGlideImage(option.imageUrl,
-                                    requireContext(),
-                                    true,
-                                    null,
-                                    null)
-                            viewHolder.itemView.setOnClickListener {
-                                when (option.id) {
-                                    1 -> activity?.navigateTo(requireView(),
-                                            R.id.action_dashboardFragment_to_comicsFragment,
-                                            null)
-                                }
-                            }
-                        })
+                _menu_dashboard_rv.adapter = getDashboardOptionsAdapter(it)
 
             } else {
                 Log.d("TAG", "Empty list.")
@@ -97,6 +80,36 @@ class DashboardFragment : Fragment() {
         })
 
         viewModel.generateMenuOptions()
+    }
+
+    private fun getDashboardOptionsAdapter(list: MutableList<DashboardOptionModel>): GenericAdapter<DashboardOptionModel> {
+        val adapter = GenericAdapter(R.layout.item_menu_option, list,
+            fun(viewHolder, view, option, _) {
+                if (option.id % 2 == 0) {
+                    view._name_dashboard_txt.textAlignment = TextView.TEXT_ALIGNMENT_TEXT_END
+                }
+                view._name_dashboard_txt.text = option.name
+                view._image_dashboard_iv.setGlideImage(
+                    option.imageUrl,
+                    requireContext(),
+                    true,
+                    null,
+                    null
+                )
+                viewHolder.itemView.setOnClickListener {
+                    when (option.id) {
+                        1 -> activity?.navigateTo(
+                            requireView(),
+                            R.id.action_dashboardFragment_to_comicsFragment,
+                            null
+                        )
+                    }
+                }
+            })
+
+        adapter.notifyDataSetChanged()
+
+        return adapter
     }
 
 }

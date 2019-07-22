@@ -12,6 +12,9 @@ interface ApiInterface {
     @GET("comics")
     fun getComics(@Query("apikey") apikey: String,
                   @Query("hash") hash: String,
-                  @Query("ts") ts: Int) : Call<MarvelResponseModel>
+                  @Query("ts") ts: Int,
+                  @Query("limit") limit: Int,
+                  @Query("offset") offset: Int,
+                  @Query("titleStartsWith") titleStartsWith: String) : Call<MarvelResponseModel>
 
 }

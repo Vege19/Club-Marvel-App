@@ -16,9 +16,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import github.vege19.clubmarvel.App
 
 import github.vege19.clubmarvel.R
+import github.vege19.clubmarvel.models.ComicModel
+import github.vege19.clubmarvel.utils.Const
 import github.vege19.clubmarvel.utils.GenericAdapter
 import github.vege19.clubmarvel.utils.configureActionbar
 import github.vege19.clubmarvel.utils.setGlideImage
@@ -39,8 +43,17 @@ class ComicsFragment : Fragment() {
         ViewModelProviders.of(this, viewModelFactory)[ComicsFragmentViewModel::class.java]
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    private lateinit var layoutManager: GridLayoutManager
+    private var visibleItemCount = 0
+    private var totalItemCount = 0
+    private var pastVisibleItemCount = 0
+    private var offset = 0
+    private var comicsList: MutableList<ComicModel> = mutableListOf()
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_comics, container, false)
     }
@@ -50,6 +63,7 @@ class ComicsFragment : Fragment() {
 
         startFlow()
         configureActionBar()
+        layoutManager = GridLayoutManager(requireContext(), 1)
         loadComics()
         configureSearchView()
 
@@ -61,36 +75,77 @@ class ComicsFragment : Fragment() {
 
     private fun configureActionBar() {
         activity?.configureActionbar(requireContext(),
-                _actionbar_comics,
-                getString(R.string.comics_title_actionbar),
-                true,
-                fun(actionbar) {
-                    actionbar._fragment_tb.setNavigationOnClickListener {
-                        findNavController().popBackStack()
-                    }
-                })
+            _actionbar_comics,
+            getString(R.string.comics_title_actionbar),
+            true,
+            fun(actionbar) {
+                actionbar._fragment_tb.setNavigationOnClickListener {
+                    findNavController().popBackStack()
+                }
+            })
     }
 
     private fun loadComics() {
         viewModel.getComics().observe(this, Observer {
             if (it.isNotEmpty()) {
-                _comics_rv.layoutManager = GridLayoutManager(requireContext(), 1)
-                _comics_rv.adapter = GenericAdapter(R.layout.item_comic, it, fun(viewHolder, view, comic, _) {
-                    val imageUrl = "${comic.thumbnail?.path}.${comic.thumbnail?.extension}"
+                _comics_rv.layoutManager = layoutManager
+                comicsList.addAll(it)
+                Log.d("TAG", "Added new 15 items.")
+                _comics_rv.adapter = getComicsAdapter(comicsList)
+                getOnScrollListener(_comics_rv)
 
-                    view._cover_comics_iv.setGlideImage(imageUrl, requireContext(), false, 210, 324)
-                    view._title_comic_txt.text = comic.title
-                    view._overview_comic_txt.text = comic.description
-                    view._writers_comic_txt.text = "Writers: "
-                    view._date_comic_txt.text = "Published date: ${comic.dates[0].date}"
-
-                })
             } else {
                 Log.d("TAG", "Empty")
             }
         })
 
-        viewModel.generateComics()
+        viewModel.generateComics(offset)
+    }
+
+    private fun getComicsAdapter(list: MutableList<ComicModel>): GenericAdapter<ComicModel> {
+        val adapter = GenericAdapter(R.layout.item_comic, list, fun(_, view, comic, _) {
+            val imageUrl = "${comic.thumbnail?.path}.${comic.thumbnail?.extension}"
+            view._cover_comics_iv.setGlideImage(imageUrl, requireContext(), false, 210, 324)
+            view._title_comic_txt.text = comic.title
+            view._overview_comic_txt.text = comic.description
+            view._writers_comic_txt.text = "Writers: "
+            view._date_comic_txt.text = "Published date: ${comic.dates[0].date}"
+
+        })
+
+        adapter.notifyDataSetChanged()
+
+        return adapter
+    }
+
+    private fun getOnScrollListener(recyclerView: RecyclerView) {
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if (dy > 0) {
+                    visibleItemCount = layoutManager.childCount
+                    totalItemCount = layoutManager.itemCount
+                    pastVisibleItemCount = layoutManager.findFirstVisibleItemPosition()
+
+                    if (Const.isLoading) {
+                        if ((visibleItemCount + pastVisibleItemCount) >= totalItemCount) {
+                            Log.i("TAG", "End...")
+                            Const.isLoading = false
+                            offset += 15
+                            viewModel.generateComics(offset)
+
+                        }
+                    }
+                }
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                Log.d("TAG", "Current position: $newState")
+            }
+        })
     }
 
     private fun configureSearchView() {
