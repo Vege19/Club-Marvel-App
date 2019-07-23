@@ -24,10 +24,7 @@ import github.vege19.clubmarvel.App
 
 import github.vege19.clubmarvel.R
 import github.vege19.clubmarvel.models.ComicModel
-import github.vege19.clubmarvel.utils.Const
-import github.vege19.clubmarvel.utils.GenericAdapter
-import github.vege19.clubmarvel.utils.configureActionbar
-import github.vege19.clubmarvel.utils.setGlideImage
+import github.vege19.clubmarvel.utils.*
 import github.vege19.clubmarvel.viewmodels.ComicsFragmentViewModel
 import github.vege19.clubmarvel.viewmodels.DashboardFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_actionbar.view.*
@@ -72,7 +69,14 @@ class ComicsFragment : Fragment() {
         startFlow()
         configureActionBar()
         layoutManager = GridLayoutManager(requireContext(), 1)
-        loadComics()
+
+        if (isDeviceOnline()) { //Load comics only if there is internet connection
+            loadComics()
+        } else {
+            activity?.showAlertDialog(requireContext(), getString(R.string.dialog_offline_title), getString(R.string.dialog_offline_message))
+        }
+
+
         configureSearchView()
 
     }

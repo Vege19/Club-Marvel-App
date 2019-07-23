@@ -22,6 +22,10 @@
 
     <integer name="animation_speed">500</integer>
 
+    <!--No connection dialog-->
+    <string name="dialog_offline_title">You are offline</string>
+    <string name="dialog_offline_message">Please, check your Internet connection and try again.</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Pulvinar mattis nunc sed blandit. Aliquam purus sit amet luctus. Nulla aliquet enim tortor at auctor urna nunc id cursus. Sollicitudin nibh sit amet commodo nulla facilisi nullam vehicula ipsum. Amet facilisis magna etiam tempor orci eu lobortis elementum nibh. Viverra maecenas accumsan lacus vel facilisis. Cras semper auctor neque vitae tempus quam pellentesque nec. Gravida in fermentum et sollicitudin ac orci. Mi eget mauris pharetra et. Nisl rhoncus mattis rhoncus urna neque viverra justo nec ultrices. Vulputate ut pharetra sit amet aliquam.</string>
