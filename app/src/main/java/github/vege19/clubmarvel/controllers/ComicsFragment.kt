@@ -117,7 +117,12 @@ class ComicsFragment : Fragment() {
     private fun getComicsAdapter(list: MutableList<ComicModel>): GenericAdapter<ComicModel> {
         comicAdapter = GenericAdapter(R.layout.item_comic, list, fun(_, view, comic, _) {
             val imageUrl = "${comic.thumbnail?.path}.${comic.thumbnail?.extension}"
-            view._cover_comics_iv.setGlideImage(imageUrl, requireContext(), false, 210, 324)
+            if (comic.thumbnail?.path == Const.NOT_AVAILABLE_IMAGE_URL) {
+                view._cover_comics_iv.setGlideImage(Const.NOT_AVAILABLE_IMAGE_URL_REPLACE,
+                        requireContext(), false, 210, 324)
+            } else {
+                view._cover_comics_iv.setGlideImage(imageUrl, requireContext(), false, 210, 324)
+            }
             view._title_comic_txt.text = comic.title
             view._overview_comic_txt.text = comic.description
             view._writers_comic_txt.text = "Writers: "
