@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.view.animation.LayoutAnimationController
 import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
@@ -53,6 +55,7 @@ class ComicsFragment : Fragment() {
     //Rv
     private var comicsList: MutableList<ComicModel> = mutableListOf()
     private lateinit var comicAdapter: GenericAdapter<ComicModel>
+    private var animationController: LayoutAnimationController? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,6 +67,7 @@ class ComicsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        animationController = AnimationUtils.loadLayoutAnimation(requireContext(), R.anim.layout_animation_from_bottom)
 
         startFlow()
         configureActionBar()
@@ -96,6 +100,7 @@ class ComicsFragment : Fragment() {
                 if (load) {
                     _comics_rv.layoutManager = layoutManager
                     _comics_rv.adapter = getComicsAdapter(comicsList)
+                    _comics_rv.layoutAnimation = animationController
                     getOnScrollListener(_comics_rv)
                     load = false
                 }
@@ -138,8 +143,8 @@ class ComicsFragment : Fragment() {
                             Log.i("TAG", "End...")
                             Const.isLoading = false
                             offset += 15
-                            viewModel.generateComics(offset)
-                            comicAdapter.notifyDataSetChanged()
+                            viewModel.generateComics(offset) // Generate new comics
+                            comicAdapter.notifyDataSetChanged() // Update adapter
 
                         }
                     }
