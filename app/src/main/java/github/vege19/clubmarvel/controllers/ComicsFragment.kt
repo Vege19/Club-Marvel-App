@@ -48,7 +48,11 @@ class ComicsFragment : Fragment() {
     private var totalItemCount = 0
     private var pastVisibleItemCount = 0
     private var offset = 0
+    private var load = true
+
+    //Rv
     private var comicsList: MutableList<ComicModel> = mutableListOf()
+    private lateinit var comicAdapter: GenericAdapter<ComicModel>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -88,22 +92,25 @@ class ComicsFragment : Fragment() {
     private fun loadComics() {
         viewModel.getComics().observe(this, Observer {
             if (it.isNotEmpty()) {
-                _comics_rv.layoutManager = layoutManager
                 comicsList.addAll(it)
-                Log.d("TAG", "Added new 15 items.")
-                _comics_rv.adapter = getComicsAdapter(comicsList)
-                getOnScrollListener(_comics_rv)
-
+                if (load) {
+                    _comics_rv.layoutManager = layoutManager
+                    _comics_rv.adapter = getComicsAdapter(comicsList)
+                    getOnScrollListener(_comics_rv)
+                    load = false
+                }
+                comicAdapter.notifyDataSetChanged()
             } else {
                 Log.d("TAG", "Empty")
             }
         })
 
         viewModel.generateComics(offset)
+
     }
 
     private fun getComicsAdapter(list: MutableList<ComicModel>): GenericAdapter<ComicModel> {
-        val adapter = GenericAdapter(R.layout.item_comic, list, fun(_, view, comic, _) {
+        comicAdapter = GenericAdapter(R.layout.item_comic, list, fun(_, view, comic, _) {
             val imageUrl = "${comic.thumbnail?.path}.${comic.thumbnail?.extension}"
             view._cover_comics_iv.setGlideImage(imageUrl, requireContext(), false, 210, 324)
             view._title_comic_txt.text = comic.title
@@ -113,9 +120,7 @@ class ComicsFragment : Fragment() {
 
         })
 
-        adapter.notifyDataSetChanged()
-
-        return adapter
+        return comicAdapter
     }
 
     private fun getOnScrollListener(recyclerView: RecyclerView) {
@@ -134,6 +139,7 @@ class ComicsFragment : Fragment() {
                             Const.isLoading = false
                             offset += 15
                             viewModel.generateComics(offset)
+                            comicAdapter.notifyDataSetChanged()
 
                         }
                     }
