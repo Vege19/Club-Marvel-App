@@ -13,7 +13,11 @@
 
         <action
             android:id="@+id/action_dashboardFragment_to_comicsFragment"
-            app:destination="@id/comicsFragment" />
+            app:destination="@id/comicsFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right"/>
 
     </fragment>
 

@@ -18,8 +18,8 @@ import javax.inject.Named
 
 class DashboardFragmentViewModel @Inject constructor(): ViewModel() {
 
-    private val menuOptions = MutableLiveData<List<DashboardOptionModel>>()
-    fun getMenuOptions() : LiveData<List<DashboardOptionModel>> {
+    private val menuOptions = MutableLiveData<MutableList<DashboardOptionModel>>()
+    fun getMenuOptions() : LiveData<MutableList<DashboardOptionModel>> {
         return menuOptions
     }
 
@@ -28,8 +28,8 @@ class DashboardFragmentViewModel @Inject constructor(): ViewModel() {
             val s = App.getContext().resources.openRawResource(R.raw.menu_options)
                 .bufferedReader().use { it.readText() }
             val gSon = Gson()
-            val itemType = object : TypeToken<List<DashboardOptionModel>>() {}.type
-            val tmpMenuOptions = gSon.fromJson<List<DashboardOptionModel>>(s, itemType)
+            val itemType = object : TypeToken<MutableList<DashboardOptionModel>>() {}.type
+            val tmpMenuOptions = gSon.fromJson<MutableList<DashboardOptionModel>>(s, itemType)
             menuOptions.postValue(tmpMenuOptions)
         }
     }

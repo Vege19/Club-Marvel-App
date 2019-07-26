@@ -10,5 +10,4 @@
     android:background="@color/colorPrimaryDark"
     app:searchIcon="@drawable/ic_search_24dp"
     app:queryHint="Search">
-
 </androidx.appcompat.widget.SearchView>
