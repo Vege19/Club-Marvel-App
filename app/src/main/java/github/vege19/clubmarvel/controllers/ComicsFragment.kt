@@ -1,6 +1,8 @@
 package github.vege19.clubmarvel.controllers
 
 
+import android.animation.Animator
+import android.animation.AnimatorInflater
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -9,6 +11,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.LayoutAnimationController
 import android.widget.TextView
@@ -53,6 +56,7 @@ class ComicsFragment : Fragment() {
     private var comicsList: MutableList<ComicModel> = mutableListOf()
     private lateinit var comicAdapter: GenericAdapter<ComicModel>
     private var animationController: LayoutAnimationController? = null
+    private var animator: Animation? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -73,7 +77,11 @@ class ComicsFragment : Fragment() {
         if (isDeviceOnline()) { //Load comics only if there is internet connection
             loadComics()
         } else {
-            activity?.showAlertDialog(requireContext(), getString(R.string.dialog_offline_title), getString(R.string.dialog_offline_message))
+            activity?.showAlertDialog(
+                requireContext(),
+                getString(R.string.dialog_offline_title),
+                getString(R.string.dialog_offline_message)
+            )
         }
 
 
@@ -100,8 +108,10 @@ class ComicsFragment : Fragment() {
     private fun loadComics() {
         viewModel.getComics().observe(this, Observer {
             if (it.isNotEmpty()) {
-                comicsList.addAll(it)
-                if (load) {
+                if (isDeviceOnline()) {
+                    comicsList.addAll(it)
+                }
+                if (load) { //Set adapter just the first time
                     _comics_rv.layoutManager = layoutManager
                     _comics_rv.adapter = getComicsAdapter(comicsList)
                     _comics_rv.layoutAnimation = animationController
@@ -109,12 +119,22 @@ class ComicsFragment : Fragment() {
                     load = false
                 }
                 comicAdapter.notifyDataSetChanged()
+                _comic_progress_bar.visibility = View.INVISIBLE //Hide progressbar
             } else {
                 Log.d("TAG", "Empty")
             }
         })
 
-        viewModel.generateComics(offset)
+        if (isDeviceOnline()) {
+            viewModel.generateComics(offset)
+        } else {
+            activity?.showAlertDialog(
+                requireContext(),
+                getString(R.string.dialog_offline_title),
+                getString(R.string.dialog_offline_message)
+            )
+
+        }
 
     }
 
@@ -122,8 +142,10 @@ class ComicsFragment : Fragment() {
         comicAdapter = GenericAdapter(R.layout.item_comic, list, fun(_, view, comic, _) {
             val imageUrl = "${comic.thumbnail?.path}.${comic.thumbnail?.extension}"
             if (comic.thumbnail?.path == Const.NOT_AVAILABLE_IMAGE_URL) {
-                view._cover_comics_iv.setGlideImage(Const.NOT_AVAILABLE_IMAGE_URL_REPLACE,
-                        requireContext(), false, 210, 324)
+                view._cover_comics_iv.setGlideImage(
+                    Const.NOT_AVAILABLE_IMAGE_URL_REPLACE,
+                    requireContext(), false, 210, 324
+                )
             } else {
                 view._cover_comics_iv.setGlideImage(imageUrl, requireContext(), false, 210, 324)
             }
@@ -149,15 +171,24 @@ class ComicsFragment : Fragment() {
 
                     if (Const.isLoading) {
                         if ((visibleItemCount + pastVisibleItemCount) >= totalItemCount) {
+                            _comic_progress_bar.visibility = View.VISIBLE //Show progressbar
                             Log.i("TAG", "End...")
                             Const.isLoading = false
                             offset += 15
-                            viewModel.generateComics(offset) // Generate new comics
+                            if (isDeviceOnline()) {
+                                viewModel.generateComics(offset) // Generate new comics
+                            } else {
+                                activity?.showAlertDialog(
+                                    requireContext(),
+                                    getString(R.string.dialog_offline_title),
+                                    getString(R.string.dialog_offline_message)
+                                )
+                            }
                             comicAdapter.notifyDataSetChanged() // Update adapter
-
                         }
                     }
                 }
+
             }
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {

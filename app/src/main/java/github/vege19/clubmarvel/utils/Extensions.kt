@@ -47,7 +47,7 @@ fun ImageView.setGlideImage(url: String, context: Context, hasZoomAnimation: Boo
     if (hasZoomAnimation) {
         Glide.with(context)
                 .load(url)
-                .transition(GenericTransitionOptions.with(github.vege19.clubmarvel.R.anim.anim_zoom_out))
+                .transition(GenericTransitionOptions.with(R.anim.anim_zoom_out))
                 .centerCrop()
                 .override(width?:0, height?:0)
                 .into(this)
