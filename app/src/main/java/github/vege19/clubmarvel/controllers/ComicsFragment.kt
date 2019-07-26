@@ -1,8 +1,5 @@
 package github.vege19.clubmarvel.controllers
 
-
-import android.animation.Animator
-import android.animation.AnimatorInflater
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -11,17 +8,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
-import android.view.animation.LayoutAnimationController
 import android.widget.TextView
-import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import github.vege19.clubmarvel.App
 
@@ -29,10 +21,8 @@ import github.vege19.clubmarvel.R
 import github.vege19.clubmarvel.models.ComicModel
 import github.vege19.clubmarvel.utils.*
 import github.vege19.clubmarvel.viewmodels.ComicsFragmentViewModel
-import github.vege19.clubmarvel.viewmodels.DashboardFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_actionbar.view.*
 import kotlinx.android.synthetic.main.fragment_comics.*
-import kotlinx.android.synthetic.main.fragment_searchbar.view.*
 import kotlinx.android.synthetic.main.item_comic.view.*
 import javax.inject.Inject
 
@@ -55,8 +45,6 @@ class ComicsFragment : Fragment() {
     //Rv
     private var comicsList: MutableList<ComicModel> = mutableListOf()
     private lateinit var comicAdapter: GenericAdapter<ComicModel>
-    private var animationController: LayoutAnimationController? = null
-    private var animator: Animation? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,11 +56,12 @@ class ComicsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        animationController = AnimationUtils.loadLayoutAnimation(requireContext(), R.anim.layout_animation_from_bottom)
 
         startFlow()
         configureActionBar()
         layoutManager = GridLayoutManager(requireContext(), 1)
+        _comics_rv.layoutManager = layoutManager
+        showSkeleton(_comics_rv, getComicsAdapter(viewModel.getEmptyItems()), R.layout.item_comic)
 
         if (isDeviceOnline()) { //Load comics only if there is internet connection
             loadComics()
@@ -112,9 +101,7 @@ class ComicsFragment : Fragment() {
                     comicsList.addAll(it)
                 }
                 if (load) { //Set adapter just the first time
-                    _comics_rv.layoutManager = layoutManager
                     _comics_rv.adapter = getComicsAdapter(comicsList)
-                    _comics_rv.layoutAnimation = animationController
                     getOnScrollListener(_comics_rv)
                     load = false
                 }

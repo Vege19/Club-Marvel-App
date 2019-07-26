@@ -42,4 +42,11 @@ class ComicsFragmentViewModel @Inject constructor(private val apiInterface: ApiI
 
     }
 
+    fun getEmptyItems(): MutableList<ComicModel> {
+        val list: MutableList<ComicModel> = mutableListOf()
+        for (i in 1..15)
+            list.add(ComicModel())
+        return list
+    }
+
 }

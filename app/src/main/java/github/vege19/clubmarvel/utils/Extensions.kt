@@ -12,14 +12,19 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.GenericTransitionOptions
 import com.bumptech.glide.Glide
+import com.ethanhua.skeleton.Skeleton
 import github.vege19.clubmarvel.App
 import github.vege19.clubmarvel.R
+import github.vege19.clubmarvel.models.ComicModel
 import kotlinx.android.synthetic.main.fragment_actionbar.view.*
+import kotlinx.android.synthetic.main.fragment_comics.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.lang.reflect.Type
 
 //Launch new activity
 inline fun <reified T : FragmentActivity> FragmentActivity.launchActivity(
@@ -103,4 +108,8 @@ fun FragmentActivity.showAlertDialog(context: Context, title: String, message: S
         })
         .create()
         .show()
+}
+
+fun showSkeleton(recyclerView: RecyclerView, adapter: RecyclerView.Adapter<GenericAdapter.ViewHolder>, layout: Int) {
+    Skeleton.bind(recyclerView).adapter(adapter).load(layout).show()
 }
