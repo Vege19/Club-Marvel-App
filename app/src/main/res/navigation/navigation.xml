@@ -25,6 +25,15 @@
         android:id="@+id/comicsFragment"
         android:name="github.vege19.clubmarvel.controllers.ComicsFragment"
         android:label="fragment_comics"
-        tools:layout="@layout/fragment_comics" />
+        tools:layout="@layout/fragment_comics" >
+        <action
+            android:id="@+id/action_comicsFragment_to_comicDetailFragment"
+            app:destination="@id/comicDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/comicDetailFragment"
+        android:name="github.vege19.clubmarvel.controllers.ComicDetailFragment"
+        android:label="fragment_comic_detail"
+        tools:layout="@layout/fragment_comic_detail" />
 
 </navigation>

@@ -9,4 +9,5 @@
     <color name="colorTransparentBlack">#80000000</color>
     <color name="colorAccentOpaque">#32ED1D24</color>
     <color name="colorWhiteOpaque">#32FFFFFF</color>
+    <color name="colorBlackOpaque">#50000000</color>
 </resources>

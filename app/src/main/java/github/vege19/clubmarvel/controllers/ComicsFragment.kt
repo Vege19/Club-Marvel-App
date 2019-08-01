@@ -126,7 +126,7 @@ class ComicsFragment : Fragment() {
     }
 
     private fun getComicsAdapter(list: MutableList<ComicModel>): GenericAdapter<ComicModel> {
-        comicAdapter = GenericAdapter(R.layout.item_comic, list, fun(_, view, comic, _) {
+        comicAdapter = GenericAdapter(R.layout.item_comic, list, fun(viewHolder, view, comic, _) {
             val imageUrl = "${comic.thumbnail?.path}.${comic.thumbnail?.extension}"
             if (comic.thumbnail?.path == Const.NOT_AVAILABLE_IMAGE_URL) {
                 view._cover_comics_iv.setGlideImage(
@@ -145,6 +145,11 @@ class ComicsFragment : Fragment() {
             view._writers_comic_txt.text = viewModel.getWriters(comic.creators!!)
             val i = comic.dates[0].date.indexOf("T")
             view._date_comic_txt.text = "Published date: ${comic.dates[0].date.substring(0, i)}"
+
+            viewHolder.itemView.setOnClickListener {
+                activity?.navigateTo(it, R.id.action_comicsFragment_to_comicDetailFragment, null)
+            }
+
 
         })
 
