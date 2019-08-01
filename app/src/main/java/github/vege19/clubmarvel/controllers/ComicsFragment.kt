@@ -138,7 +138,7 @@ class ComicsFragment : Fragment() {
             }
             view._title_comic_txt.text = comic.title
             view._overview_comic_txt.text = comic.description
-            view._writers_comic_txt.text = "Writers: "
+            view._writers_comic_txt.text = viewModel.getWriters(comic.creators!!)
             view._date_comic_txt.text = "Published date: ${comic.dates[0].date}"
 
         })
