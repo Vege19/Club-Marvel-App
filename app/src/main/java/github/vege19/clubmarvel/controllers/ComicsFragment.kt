@@ -137,9 +137,14 @@ class ComicsFragment : Fragment() {
                 view._cover_comics_iv.setGlideImage(imageUrl, requireContext(), false, 210, 324)
             }
             view._title_comic_txt.text = comic.title
-            view._overview_comic_txt.text = comic.description
+            if (comic.description.isNullOrEmpty()) {
+                view._overview_comic_txt.text = "This comic hasn't overview."
+            } else {
+                view._overview_comic_txt.text = comic.description
+            }
             view._writers_comic_txt.text = viewModel.getWriters(comic.creators!!)
-            view._date_comic_txt.text = "Published date: ${comic.dates[0].date}"
+            val i = comic.dates[0].date.indexOf("T")
+            view._date_comic_txt.text = "Published date: ${comic.dates[0].date.substring(0, i)}"
 
         })
 

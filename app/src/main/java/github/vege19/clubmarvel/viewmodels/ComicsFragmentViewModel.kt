@@ -54,25 +54,6 @@ class ComicsFragmentViewModel @Inject constructor(private val apiInterface: ApiI
         return list
     }
 
-    /* fun getWriters(creators: CreatorsResponseModel): String {
-         var writersString = ""
-         val sb = StringBuilder()
-         if (creators.items.isEmpty()) {
-             return "There's no writers found."
-         } else {
-             for (item in creators.items) {
-                 if (item.role == Const.ROLE_WRITER) {
-                     sb.append(item.name).append(" ")
-                 }
-             }
-         }
-
-         writersString = sb.toString()
-
-         return "Writers: $writersString"
-
-     }*/
-
     fun getWriters(creators: CreatorsResponseModel): String {
         val writers: MutableList<CreatorModel> = mutableListOf()
         var writersString = ""
