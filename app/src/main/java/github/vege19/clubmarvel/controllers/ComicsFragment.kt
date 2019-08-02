@@ -42,6 +42,7 @@ class ComicsFragment : Fragment() {
     private var offset = 0
     private var load = true
     private val bundle = Bundle()
+    private var mainView: View? = null
 
     //Rv
     private var comicsList: MutableList<ComicModel> = mutableListOf()
@@ -51,8 +52,12 @@ class ComicsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_comics, container, false)
+        if (mainView == null) {
+            mainView = inflater.inflate(R.layout.fragment_comics, container, false)
+
+        }
+
+        return mainView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,7 +67,9 @@ class ComicsFragment : Fragment() {
         configureActionBar()
         layoutManager = GridLayoutManager(requireContext(), 1)
         _comics_rv.layoutManager = layoutManager
-        showSkeleton(_comics_rv, getComicsAdapter(viewModel.getEmptyItems()), R.layout.item_comic)
+        if (load) {
+            showSkeleton(_comics_rv, getComicsAdapter(viewModel.getEmptyItems()), R.layout.item_comic)
+        }
 
         if (isDeviceOnline()) { //Load comics only if there is internet connection
             loadComics()
