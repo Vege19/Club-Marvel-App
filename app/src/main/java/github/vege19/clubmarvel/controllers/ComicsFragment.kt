@@ -41,6 +41,7 @@ class ComicsFragment : Fragment() {
     private var pastVisibleItemCount = 0
     private var offset = 0
     private var load = true
+    private val bundle = Bundle()
 
     //Rv
     private var comicsList: MutableList<ComicModel> = mutableListOf()
@@ -127,14 +128,15 @@ class ComicsFragment : Fragment() {
 
     private fun getComicsAdapter(list: MutableList<ComicModel>): GenericAdapter<ComicModel> {
         comicAdapter = GenericAdapter(R.layout.item_comic, list, fun(viewHolder, view, comic, _) {
+
             val imageUrl = "${comic.thumbnail?.path}.${comic.thumbnail?.extension}"
             if (comic.thumbnail?.path == Const.NOT_AVAILABLE_IMAGE_URL) {
                 view._cover_comics_iv.setGlideImage(
                     Const.NOT_AVAILABLE_IMAGE_URL_REPLACE,
-                    requireContext(), false, 210, 324
+                    requireContext(), false, 210, 324, false
                 )
             } else {
-                view._cover_comics_iv.setGlideImage(imageUrl, requireContext(), false, 210, 324)
+                view._cover_comics_iv.setGlideImage(imageUrl, requireContext(), false, 210, 324, false)
             }
             view._title_comic_txt.text = comic.title
             if (comic.description.isNullOrEmpty()) {
@@ -147,7 +149,8 @@ class ComicsFragment : Fragment() {
             view._date_comic_txt.text = "Published date: ${comic.dates[0].date.substring(0, i)}"
 
             viewHolder.itemView.setOnClickListener {
-                activity?.navigateTo(it, R.id.action_comicsFragment_to_comicDetailFragment, null)
+                bundle.putSerializable(Const.COMIC_KEY, comic) //Saving comic in a bundle
+                activity?.navigateTo(it, R.id.action_comicsFragment_to_comicDetailFragment, bundle)
             }
 
 
