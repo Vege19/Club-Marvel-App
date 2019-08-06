@@ -40,9 +40,9 @@ class ComicsFragment : Fragment() {
     private var totalItemCount = 0
     private var pastVisibleItemCount = 0
     private var offset = 0
-    private var load = true
     private val bundle = Bundle()
     private var mainView: View? = null
+    private var load = true
 
     //Rv
     private var comicsList: MutableList<ComicModel> = mutableListOf()
@@ -72,7 +72,9 @@ class ComicsFragment : Fragment() {
         }
 
         if (isDeviceOnline()) { //Load comics only if there is internet connection
-            loadComics()
+            if (load) {
+                loadComics()
+            }
         } else {
             activity?.showAlertDialog(
                 requireContext(),
@@ -97,7 +99,7 @@ class ComicsFragment : Fragment() {
             true,
             fun(actionbar) {
                 actionbar._fragment_tb.setNavigationOnClickListener {
-                    findNavController().popBackStack()
+                    findNavController().navigateUp()
                 }
             })
     }

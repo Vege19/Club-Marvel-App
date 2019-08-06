@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.tabs.TabLayout
 
 import github.vege19.clubmarvel.R
 import github.vege19.clubmarvel.models.ComicModel
@@ -27,6 +29,8 @@ class ComicDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        configureActionBar()
+        configureTabLayout()
         loadComicContent()
 
     }
@@ -42,7 +46,20 @@ class ComicDetailFragment : Fragment() {
         _cover_comic_detail_iv.setGlideImage(thumbnailUrl, requireContext(), false, 210, 324, false)
 
         //Set comic title
-        _title_comic_detail_txt.text = comic.title
+        _title_collapsing_ctl.title = comic.title
+
+    }
+
+    private fun configureActionBar() {
+        _toolbar_comic_detail.navigationIcon = activity?.getDrawable(R.drawable.ic_arrow_back_24dp)
+        _toolbar_comic_detail.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
+    }
+
+    private fun configureTabLayout() {
+        _tab_layout_comic_detail.addTab(_tab_layout_comic_detail.newTab().setText("CHARACTERS"))
+        _tab_layout_comic_detail.addTab(_tab_layout_comic_detail.newTab().setText("SERIES"))
 
     }
 

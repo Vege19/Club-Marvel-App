@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,21 +13,15 @@
         android:background="@color/colorPrimary">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/_title_collapsing_ctl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/_toolbar_comic_detail"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:elevation="0dp"
-                android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:layout_collapseMode="pin"
-                app:titleTextColor="@color/colorAccent">
-
-            </androidx.appcompat.widget.Toolbar>
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:title="title"
+            app:expandedTitleTextAppearance="@style/ActionBarTitleAppearance"
+            app:expandedTitleGravity="center|bottom"
+            app:collapsedTitleTextAppearance="@style/ActionBarTitleAppearance">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -59,29 +54,22 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_43sdp"
                     android:src="@drawable/img_not_found"
-                    android:scaleType="centerCrop"/>
-
-                <TextView
-                    android:id="@+id/_title_comic_detail_txt"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_12sdp"
-                    android:layout_marginEnd="@dimen/_12sdp"
-                    android:fontFamily="@font/roboto_medium"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/_18sdp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/_cover_comic_detail_iv"
-                    android:layout_marginTop="@dimen/_12sdp"
-                    tools:text="Title"
-                    android:layout_marginBottom="@dimen/_12sdp"/>
+                    android:scaleType="centerCrop"
+                    android:layout_marginBottom="@dimen/_56sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/_toolbar_comic_detail"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:elevation="0dp"
+                android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:layout_collapseMode="pin"
+                app:titleTextColor="@color/colorAccent"/>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -100,7 +88,11 @@
             android:background="@color/colorPrimaryDark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:tabIndicatorColor="@color/colorPrimaryDark"
+            app:tabSelectedTextColor="@color/colorPrimaryText"
+            app:tabTextColor="@color/colorPrimaryText"
+            app:tabBackground="@drawable/tab_background" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/_content_comic_detail_rv"
@@ -109,7 +101,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/_tab_layout_comic_detail"/>
+            app:layout_constraintTop_toBottomOf="@id/_tab_layout_comic_detail" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
