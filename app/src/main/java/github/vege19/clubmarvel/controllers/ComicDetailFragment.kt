@@ -76,6 +76,12 @@ class ComicDetailFragment : Fragment() {
         val i = comic.dates[0].date.indexOf("T")
         _published_date_comic_detail_txt.text = comic.dates[0].date.substring(0, i)
 
+        //Set comic writers
+        _writers_comic_detail_txt.text = viewModel.getWriters(comic.creators!!)
+
+        //Set cover artist
+        _cover_artist_comic_detail_txt.text = viewModel.getCoverArtist(comic.creators!!)
+
     }
 
     private fun configureActionBar() {
