@@ -149,7 +149,7 @@ class ComicsFragment : Fragment() {
             }
             view._title_comic_txt.text = comic.title
             if (comic.description.isNullOrEmpty()) {
-                view._overview_comic_txt.text = "This comic hasn't overview."
+                view._overview_comic_txt.text = getString(R.string.null_case_overview)
             } else {
                 view._overview_comic_txt.text = comic.description
             }

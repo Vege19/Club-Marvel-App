@@ -48,6 +48,17 @@ class ComicDetailFragment : Fragment() {
         //Set comic title
         _title_collapsing_ctl.title = comic.title
 
+        //Set comic summary
+        if (comic.description.isNullOrEmpty()) {
+            _overview_comic_detail_txt.text = getString(R.string.null_case_overview)
+        } else {
+            _overview_comic_detail_txt.text = comic.description
+        }
+
+        //Set comic's published date
+        val i = comic.dates[0].date.indexOf("T")
+        _published_date_comic_detail_txt.text = comic.dates[0].date.substring(0, i)
+
     }
 
     private fun configureActionBar() {
@@ -58,8 +69,12 @@ class ComicDetailFragment : Fragment() {
     }
 
     private fun configureTabLayout() {
-        _tab_layout_comic_detail.addTab(_tab_layout_comic_detail.newTab().setText("CHARACTERS"))
-        _tab_layout_comic_detail.addTab(_tab_layout_comic_detail.newTab().setText("SERIES"))
+        _tab_layout_comic_detail.addTab(_tab_layout_comic_detail.newTab()
+                .setText(getString(R.string.comic_detail_overview_tab)), 0)
+        _tab_layout_comic_detail.addTab(_tab_layout_comic_detail.newTab()
+                .setText(getString(R.string.comic_detail_characters_tab)), 1)
+        _tab_layout_comic_detail.addTab(_tab_layout_comic_detail.newTab()
+                .setText(getString(R.string.comic_detail_series_tab)), 2)
 
     }
 

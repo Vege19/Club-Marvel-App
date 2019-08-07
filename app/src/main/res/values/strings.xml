@@ -15,6 +15,14 @@
     <!--Comic fragment-->
     <string name="comics_title_actionbar">COMICS</string>
 
+    <!--Comic detail fragment-->
+    <string name="comic_detail_published_date">Published date</string>
+    <string name="comic_detail_writers">Writers</string>
+    <string name="comic_detail_cover_artist">Cover artist</string>
+    <string name="comic_detail_overview_tab">OVERVIEW</string>
+    <string name="comic_detail_characters_tab">CHARACTERS</string>
+    <string name="comic_detail_series_tab">SERIES</string>
+
     <!--Comic item-->
     <string name="comics_item_title_holder">Title:</string>
     <string name="comics_item_date_holder">Published at:</string>
@@ -28,6 +36,9 @@
 
     <!--Extras-->
     <string name="loading_label">Loading...</string>
+
+    <!--Null cases-->
+    <string name="null_case_overview">This comic hasn\'t an overview.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
