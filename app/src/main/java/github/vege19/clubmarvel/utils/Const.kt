@@ -9,4 +9,6 @@ object Const {
 
     var isLoading = false
     const val ROLE_WRITER = "writer"
+
+    const val COMIC_KEY = "COMIC_KEY"
 }

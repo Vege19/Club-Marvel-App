@@ -40,6 +40,8 @@ class ComicsFragment : Fragment() {
     private var totalItemCount = 0
     private var pastVisibleItemCount = 0
     private var offset = 0
+    private val bundle = Bundle()
+    private var mainView: View? = null
     private var load = true
 
     //Rv
@@ -50,8 +52,12 @@ class ComicsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_comics, container, false)
+        if (mainView == null) {
+            mainView = inflater.inflate(R.layout.fragment_comics, container, false)
+
+        }
+
+        return mainView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -61,10 +67,14 @@ class ComicsFragment : Fragment() {
         configureActionBar()
         layoutManager = GridLayoutManager(requireContext(), 1)
         _comics_rv.layoutManager = layoutManager
-        showSkeleton(_comics_rv, getComicsAdapter(viewModel.getEmptyItems()), R.layout.item_comic)
+        if (load) {
+            showSkeleton(_comics_rv, getComicsAdapter(viewModel.getEmptyItems()), R.layout.item_comic)
+        }
 
         if (isDeviceOnline()) { //Load comics only if there is internet connection
-            loadComics()
+            if (load) {
+                loadComics()
+            }
         } else {
             activity?.showAlertDialog(
                 requireContext(),
@@ -89,7 +99,7 @@ class ComicsFragment : Fragment() {
             true,
             fun(actionbar) {
                 actionbar._fragment_tb.setNavigationOnClickListener {
-                    findNavController().popBackStack()
+                    findNavController().navigateUp()
                 }
             })
     }
@@ -126,25 +136,32 @@ class ComicsFragment : Fragment() {
     }
 
     private fun getComicsAdapter(list: MutableList<ComicModel>): GenericAdapter<ComicModel> {
-        comicAdapter = GenericAdapter(R.layout.item_comic, list, fun(_, view, comic, _) {
+        comicAdapter = GenericAdapter(R.layout.item_comic, list, fun(viewHolder, view, comic, _) {
+
             val imageUrl = "${comic.thumbnail?.path}.${comic.thumbnail?.extension}"
             if (comic.thumbnail?.path == Const.NOT_AVAILABLE_IMAGE_URL) {
                 view._cover_comics_iv.setGlideImage(
                     Const.NOT_AVAILABLE_IMAGE_URL_REPLACE,
-                    requireContext(), false, 210, 324
+                    requireContext(), false, 210, 324, false
                 )
             } else {
-                view._cover_comics_iv.setGlideImage(imageUrl, requireContext(), false, 210, 324)
+                view._cover_comics_iv.setGlideImage(imageUrl, requireContext(), false, 210, 324, false)
             }
             view._title_comic_txt.text = comic.title
             if (comic.description.isNullOrEmpty()) {
-                view._overview_comic_txt.text = "This comic hasn't overview."
+                view._overview_comic_txt.text = getString(R.string.null_case_overview)
             } else {
                 view._overview_comic_txt.text = comic.description
             }
             view._writers_comic_txt.text = viewModel.getWriters(comic.creators!!)
             val i = comic.dates[0].date.indexOf("T")
             view._date_comic_txt.text = "Published date: ${comic.dates[0].date.substring(0, i)}"
+
+            viewHolder.itemView.setOnClickListener {
+                bundle.putSerializable(Const.COMIC_KEY, comic) //Saving comic in a bundle
+                activity?.navigateTo(it, R.id.action_comicsFragment_to_comicDetailFragment, bundle)
+            }
+
 
         })
 

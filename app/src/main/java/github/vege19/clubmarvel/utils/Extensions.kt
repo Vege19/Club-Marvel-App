@@ -18,10 +18,12 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.GenericTransitionOptions
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.ethanhua.skeleton.Skeleton
 import github.vege19.clubmarvel.App
 import github.vege19.clubmarvel.R
 import github.vege19.clubmarvel.models.ComicModel
+import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.fragment_actionbar.view.*
 import kotlinx.android.synthetic.main.fragment_comics.*
 import kotlinx.coroutines.Dispatchers
@@ -32,7 +34,8 @@ import java.lang.reflect.Type
 //Launch new activity
 inline fun <reified T : FragmentActivity> FragmentActivity.launchActivity(
         closeCurrent: Boolean = false,
-        noinline init: Intent.() -> Unit = {}) {
+        noinline init: Intent.() -> Unit = {}
+) {
     val i = Intent(this, T::class.java)
     i.init()
     startActivity(i)
@@ -51,7 +54,14 @@ fun ViewModel.makeRetrofitCallback(action: suspend () -> Unit) {
 }
 
 //Set image with glide
-fun ImageView.setGlideImage(url: String, context: Context, hasZoomAnimation: Boolean, width: Int?, height: Int?) {
+fun ImageView.setGlideImage(
+        url: String,
+        context: Context,
+        hasZoomAnimation: Boolean,
+        width: Int?,
+        height: Int?,
+        isBlur: Boolean
+) {
     val progressDrawable = CircularProgressDrawable(App.getContext())
     progressDrawable.setColorSchemeColors(App.getContext().resources.getColor(R.color.colorAccent))
     progressDrawable.centerRadius = 30f
@@ -65,7 +75,16 @@ fun ImageView.setGlideImage(url: String, context: Context, hasZoomAnimation: Boo
                 .transition(GenericTransitionOptions.with(R.anim.anim_zoom_out))
                 .error(App.getContext().getDrawable(R.drawable.ic_close_24dp))
                 .centerCrop()
-                .override(width?:0, height?:0)
+                .override(width ?: 0, height ?: 0)
+                .into(this)
+    } else if (isBlur) {
+        Glide.with(context)
+                .load(url)
+                .placeholder(progressDrawable)
+                .error(App.getContext().getDrawable(R.drawable.ic_vector_not_found))
+                .centerCrop()
+                .override(width!!, height!!)
+                .apply(bitmapTransform(BlurTransformation(5, 3)))
                 .into(this)
     } else {
         Glide.with(context)
@@ -85,7 +104,13 @@ fun FragmentActivity.navigateTo(view: View, actionId: Int, bundle: Bundle?) {
 
 //Action bar config
 
-fun FragmentActivity.configureActionbar(context: Context, actionBar: View, title: String, isReturnable: Boolean, action: (actionBar: View) -> Unit) {
+fun FragmentActivity.configureActionbar(
+        context: Context,
+        actionBar: View,
+        title: String,
+        isReturnable: Boolean,
+        action: (actionBar: View) -> Unit
+) {
     actionBar._fragment_tb.title = title
     actionBar._fragment_tb.setTitleTextAppearance(
             context,
@@ -94,7 +119,8 @@ fun FragmentActivity.configureActionbar(context: Context, actionBar: View, title
 
     if (isReturnable) {
         actionBar.setPadding(0, 0, 300, 0)
-        actionBar._fragment_tb.navigationIcon = context.getDrawable(github.vege19.clubmarvel.R.drawable.ic_arrow_back_24dp)
+        actionBar._fragment_tb.navigationIcon =
+                context.getDrawable(github.vege19.clubmarvel.R.drawable.ic_arrow_back_24dp)
         action.invoke(actionBar)
     }
 }
@@ -112,15 +138,15 @@ fun isDeviceOnline(): Boolean {
 //Show alert dialog
 fun FragmentActivity.showAlertDialog(context: Context, title: String, message: String) {
     AlertDialog
-        .Builder(context)
-        .setTitle(title)
-        .setMessage(message)
-        .setCancelable(false)
-        .setPositiveButton("OK", DialogInterface.OnClickListener { dialogInterface, i ->
-            dialogInterface.dismiss()
-        })
-        .create()
-        .show()
+            .Builder(context)
+            .setTitle(title)
+            .setMessage(message)
+            .setCancelable(false)
+            .setPositiveButton("OK", DialogInterface.OnClickListener { dialogInterface, i ->
+                dialogInterface.dismiss()
+            })
+            .create()
+            .show()
 }
 
 fun showSkeleton(recyclerView: RecyclerView, adapter: RecyclerView.Adapter<GenericAdapter.ViewHolder>, layout: Int) {

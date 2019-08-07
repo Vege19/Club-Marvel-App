@@ -94,7 +94,8 @@ class DashboardFragment : Fragment() {
                     requireContext(),
                     true,
                     null,
-                    null
+                    null,
+                    false
                 )
                 viewHolder.itemView.setOnClickListener {
                     when (option.id) {
