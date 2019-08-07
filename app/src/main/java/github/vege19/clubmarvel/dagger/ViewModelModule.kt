@@ -7,6 +7,7 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 import github.vege19.clubmarvel.utils.ViewModelFactory
 import github.vege19.clubmarvel.utils.ViewModelKey
+import github.vege19.clubmarvel.viewmodels.ComicDetailFragmentViewModel
 import github.vege19.clubmarvel.viewmodels.ComicsFragmentViewModel
 import github.vege19.clubmarvel.viewmodels.DashboardFragmentViewModel
 import github.vege19.clubmarvel.viewmodels.MainActivityViewModel
@@ -33,5 +34,10 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ComicsFragmentViewModel::class)
     abstract fun comicsFragmentViewModel(viewModel: ComicsFragmentViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ComicDetailFragmentViewModel::class)
+    abstract fun comicDetailFragmentViewModel(viewModel: ComicDetailFragmentViewModel): ViewModel
 
 }

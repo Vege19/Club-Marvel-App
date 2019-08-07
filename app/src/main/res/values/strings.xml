@@ -39,6 +39,8 @@
 
     <!--Null cases-->
     <string name="null_case_overview">This comic hasn\'t an overview.</string>
+    <string name="null_case_cover_artist">Unknown</string>
+    <string name="null_case_writers">There aren\'t writers found.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

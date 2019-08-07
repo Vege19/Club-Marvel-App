@@ -4,7 +4,9 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import github.vege19.clubmarvel.App
 import github.vege19.clubmarvel.BuildConfig
+import github.vege19.clubmarvel.R
 import github.vege19.clubmarvel.api.ApiInterface
 import github.vege19.clubmarvel.models.ComicModel
 import github.vege19.clubmarvel.models.CreatorModel
@@ -66,7 +68,7 @@ class ComicsFragmentViewModel @Inject constructor(private val apiInterface: ApiI
         }
 
         if (writers.isEmpty()) {
-            return "There's no writers found."
+            return App.getContext().getString(R.string.null_case_writers)
         } else {
             for (writer in writers) {
                 if (writers.size <= 1) {

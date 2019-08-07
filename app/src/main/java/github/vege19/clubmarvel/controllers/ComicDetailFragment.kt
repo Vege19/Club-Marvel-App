@@ -7,17 +7,29 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayout
+import github.vege19.clubmarvel.App
 
 import github.vege19.clubmarvel.R
 import github.vege19.clubmarvel.models.ComicModel
 import github.vege19.clubmarvel.utils.Const
 import github.vege19.clubmarvel.utils.setGlideImage
+import github.vege19.clubmarvel.viewmodels.ComicDetailFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_comic_detail.*
+import javax.inject.Inject
 
 
 class ComicDetailFragment : Fragment() {
+
+    //Injecting view model
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel by lazy {
+        ViewModelProviders.of(this, viewModelFactory)[ComicDetailFragmentViewModel::class.java]
+    }
 
     private lateinit var comic: ComicModel
 
@@ -29,10 +41,15 @@ class ComicDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        startFlow()
+
+    }
+
+    private fun startFlow() {
+        App.getComponent().inject(this)
         configureActionBar()
         configureTabLayout()
         loadComicContent()
-
     }
 
     private fun loadComicContent() {
@@ -58,6 +75,12 @@ class ComicDetailFragment : Fragment() {
         //Set comic's published date
         val i = comic.dates[0].date.indexOf("T")
         _published_date_comic_detail_txt.text = comic.dates[0].date.substring(0, i)
+
+        //Set comic writers
+        _writers_comic_detail_txt.text = viewModel.getWriters(comic.creators!!)
+
+        //Set cover artist
+        _cover_artist_comic_detail_txt.text = viewModel.getCoverArtist(comic.creators!!)
 
     }
 
