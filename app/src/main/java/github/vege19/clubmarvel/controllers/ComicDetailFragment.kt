@@ -10,15 +10,21 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import github.vege19.clubmarvel.App
 
 import github.vege19.clubmarvel.R
+import github.vege19.clubmarvel.models.CharacterModel
 import github.vege19.clubmarvel.models.ComicModel
+import github.vege19.clubmarvel.models.RegularModel
+import github.vege19.clubmarvel.models.SeriesModel
 import github.vege19.clubmarvel.utils.Const
+import github.vege19.clubmarvel.utils.GenericAdapter
 import github.vege19.clubmarvel.utils.setGlideImage
 import github.vege19.clubmarvel.viewmodels.ComicDetailFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_comic_detail.*
+import kotlinx.android.synthetic.main.item_regular_item.view.*
 import javax.inject.Inject
 
 
@@ -32,6 +38,8 @@ class ComicDetailFragment : Fragment() {
     }
 
     private lateinit var comic: ComicModel
+    private var characters: MutableList<RegularModel> = arrayListOf()
+    private var series: MutableList<RegularModel> = arrayListOf()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -82,7 +90,27 @@ class ComicDetailFragment : Fragment() {
         //Set cover artist
         _cover_artist_comic_detail_txt.text = viewModel.getCoverArtist(comic.creators!!)
 
+        //Load list content
+        characters = comic.characters?.items?.toMutableList() ?: mutableListOf()
+        series = comic.series?.items?.toMutableList() ?: mutableListOf()
+
     }
+
+    private fun fillRecyclerViewlist(isCharacters: Boolean = false) {
+        _content_comic_detail_rv.layoutManager = LinearLayoutManager(requireContext())
+        if (isCharacters) {
+            _content_comic_detail_rv.adapter = regularAdapter(characters)
+        } else {
+            _content_comic_detail_rv.adapter = regularAdapter(series)
+        }
+    }
+
+    private fun regularAdapter(list: MutableList<RegularModel>): GenericAdapter<RegularModel> {
+        return GenericAdapter(R.layout.item_regular_item, list, fun(viewHolder, view, item, _) {
+            view._regular_item_txt.text = item.name
+        })
+    }
+
 
     private fun configureActionBar() {
         _toolbar_comic_detail.navigationIcon = activity?.getDrawable(R.drawable.ic_arrow_back_24dp)
@@ -115,10 +143,12 @@ class ComicDetailFragment : Fragment() {
                         _content_comic_detail_rv.visibility = View.GONE
                     }
                     1 -> {
+                        fillRecyclerViewlist(true)
                         _overview_comic_detail_nsv.visibility = View.GONE
                         _content_comic_detail_rv.visibility = View.VISIBLE
                     }
                     2 -> {
+                        fillRecyclerViewlist(false)
                         _overview_comic_detail_nsv.visibility = View.GONE
                         _content_comic_detail_rv.visibility = View.VISIBLE
                     }
@@ -126,7 +156,6 @@ class ComicDetailFragment : Fragment() {
             }
 
         })
-
 
     }
 

@@ -212,7 +212,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/_tab_layout_comic_detail"
-            android:visibility="gone"/>
+            android:visibility="gone"
+                tools:listitem="@layout/item_regular_item"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
