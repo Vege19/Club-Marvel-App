@@ -99,6 +99,35 @@ class ComicDetailFragment : Fragment() {
         _tab_layout_comic_detail.addTab(_tab_layout_comic_detail.newTab()
                 .setText(getString(R.string.comic_detail_series_tab)), 2)
 
+        //Tab switch listener
+        _tab_layout_comic_detail.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(p0: TabLayout.Tab?) {
+            }
+
+            override fun onTabUnselected(p0: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabSelected(p0: TabLayout.Tab?) {
+                when (p0?.position) {
+                    0 -> {
+                        _overview_comic_detail_nsv.visibility = View.VISIBLE
+                        _content_comic_detail_rv.visibility = View.GONE
+                    }
+                    1 -> {
+                        _overview_comic_detail_nsv.visibility = View.GONE
+                        _content_comic_detail_rv.visibility = View.VISIBLE
+                    }
+                    2 -> {
+                        _overview_comic_detail_nsv.visibility = View.GONE
+                        _content_comic_detail_rv.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+        })
+
+
     }
 
 
